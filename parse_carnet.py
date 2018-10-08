@@ -8,7 +8,12 @@ class parsepage(object):
     def __init__(self, url):
         self.getcarnet(url)
         print (url, "recupere")
-        self.recupmeta() 
+        post = self.recupmeta() 
+        if (post):
+            print (post)
+            #md_json = json.loads(post)
+            #print(md_json)
+
         """TODO decoupe, recupere tous les urls
         separe carnets, images et autres liens
         genere log json avec toutes ces infos si c'est un post et pas un autre type d'entree
@@ -24,9 +29,9 @@ class parsepage(object):
         if not (html): 
             html = self.html
         if re.search('time class="entry-date" datetime=', html):
-            print ('date : ',  re.findall('time class="entry-date" datetime="([\d-]*)T\S*">', html) )
-            print ('size : ', len(html))
-            return 1
+            md = {'date' : re.findall('time class="entry-date" datetime="([\d-]*)T\S*">', html)[0] } 
+            md['size'] = len(html)
+            return md 
         else:
             print ("not a post")
             return 0
