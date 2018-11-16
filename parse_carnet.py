@@ -5,13 +5,6 @@ from bs4 import BeautifulSoup
 import re
 import json
 
-class get_content(object):
-    def __init__(self, url):
-        print (url, "recupere")
-        with urllib.request.urlopen(url) as response:
-            html = response.read()
-            self.html = html.decode('utf-8')
-
 class parsepage(object):
     def __init__(self, html):
         post = self.recupmeta(html) 

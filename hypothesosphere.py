@@ -3,8 +3,6 @@
 
 
 """TODO
-log pages faites
-log a faire, y injecter le seed -exclus
 faire le suivant de la liste, recup infos si post, recup urls carnet manquante, les injecter si pas exclus
 
 descripteur carnet :
@@ -27,9 +25,14 @@ from bs4 import BeautifulSoup
 import os
 
 ###CONFIG###
+agent = 'gsprbot (Contact:debaz@ehess.fr)'
 link_for_seed = "http://www.openedition.org/?page=coverage&pubtype=carnet"
-force_update_seed = 0
+force_update_seed = 1
 todo = "todo.dat"
+done = "done.dat"
+exclude = [
+    #"socioargu.hypotheses.org",
+    ]
 
 def get_links(soup):
     """Get urls fom <a """
@@ -46,10 +49,13 @@ def is_carnet(url):
     return re.search("^\w*.hypotheses.org", url) 
 
 def ReadUrl(url):
+    """Open an url with declarative header"""
+    global agent
     req = urllib.request.Request(url)
-    req.add_header('User-Agent', 'gsprbot (Contact:debaz@ehess.fr)')
+    req.add_header('User-Agent', agent) 
     with urllib.request.urlopen(req) as buf:
         page = buf.read()
+        page = page.decode('utf-8')
     return page
  
 def get_carnets_from_seed(url):
@@ -58,11 +64,52 @@ def get_carnets_from_seed(url):
     urls = get_links(soup)
     return [url for url in urls if is_carnet(url)]
 
+class logs(object):
+    def __init__(self, todofile, donefile):
+        self.todofile = todofile
+        self.donefile = donefile
+        
+    def save_todo(self, seed):
+        with open(self.todofile, "w") as F:
+            F.writelines(line + '\n' for line in seed)
+
+    def get_todo(self):
+        with open(self.todofile, 'r') as F:
+            b = F.read()
+            return re.split('\n', b)[:-1]
+ 
+    def add_done(self, url):
+        with open(self.donefile, "a") as F:
+            F.write(url+"\n")
+
+    def get_done(self):
+        if (os.path.isfile(self.donefile)):
+            with open(self.donefile, 'r') as F:
+                b = F.read()
+                return re.split('\n', b)[:-1]
+        else:
+            return []
+
 if __name__ == '__main__' :
+    Logs = logs(todo, done)
     if (not os.path.isfile(todo)) or (force_update_seed):
         seed = get_carnets_from_seed(link_for_seed)
+        seed = [url for url in seed if url not in exclude]
         print("Found %d carnet(s) on  %s" % (len(seed), link_for_seed))
-        with open(todo, "w") as todofile:
-            todofile.writelines(line + '\n' for line in seed)
+        Logs.save_todo(seed)
+
+    done =Logs.get_done() 
+    seed = Logs.get_todo()
+    while(seed):
+        billet = seed.pop(0) 
+        """Parse le billet"""
+        """Recupere urls carnets"""
+        """ajoute todo ceux qui n'y sont pas et ne sont pas dans done ni exclus"""
+
+        """ajoute billet a done"""
+        done.append(billet)
+        Logs.add_done(billet)
+        print (len(done), "done", len(seed), "to do")
+    
             
 
