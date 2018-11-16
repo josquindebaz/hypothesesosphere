@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-#josquin debaz 26 septembre 2018
+#josquin debaz 16 novembre
 
 
 """TODO
@@ -21,41 +21,48 @@ matrice croisée des liens d'un carnet vers les autres
 """
 
 
-
-
 import urllib.request
 import re
+from bs4 import BeautifulSoup
+import os
 
 ###CONFIG###
 link_for_seed = "http://www.openedition.org/?page=coverage&pubtype=carnet"
 force_update_seed = 0
+todo = "todo.dat"
 
-def get_links(html):
-    liste = []
-    while re.search('https?://', html): 
-        html = re.split('https?://', html, 1) 
-        fragment =  re.split('[\'" <]', html[1], 1) 
-        liste.append('http://%s'%fragment[0])
-        html = fragment[1]
-    return list(set(liste))
+def get_links(soup):
+    """Get urls fom <a """
+    list_url = []
+    for url in soup.find_all('a', href=True):
+        href = url['href']
+        href = re.sub("https?://(www.)?", "", href) 
+        href = re.sub("(#.*|/$)", "", href)
+        if (href):
+            list_url.append(href)
+    return list(set(list_url))
 
-def get_links_from_body(url):
-    #url = re.sub("http://http://", "http://", url)
-    print ("Opening %s" % url)
+def is_carnet(url): 
+    return re.search("^\w*.hypotheses.org", url) 
 
-    with urllib.request.urlopen(url) as buf:
+def ReadUrl(url):
+    req = urllib.request.Request(url)
+    req.add_header('User-Agent', 'gsprbot (Contact:debaz@ehess.fr)')
+    with urllib.request.urlopen(req) as buf:
         page = buf.read()
-        #try :
-        #    page = re.split("<body", page, 1)[1]
-        #    page = re.split('<div id="footer">', page)[0]
-        return get_links(page)
-        #except :
-        #    print( "split problem with %s" % url)
-        #    return []
-
+    return page
+ 
 def get_carnets_from_seed(url):
-    seed = get_links_from_body(url)
-    print("Got %d carnet(s) on  %s" % (len(seed), url))
+    html = ReadUrl(url)
+    soup = BeautifulSoup(html, "lxml")
+    urls = get_links(soup)
+    return [url for url in urls if is_carnet(url)]
 
-get_carnets_from_seed(link_for_seed)
+if __name__ == '__main__' :
+    if (not os.path.isfile(todo)) or (force_update_seed):
+        seed = get_carnets_from_seed(link_for_seed)
+        print("Found %d carnet(s) on  %s" % (len(seed), link_for_seed))
+        with open(todo, "w") as todofile:
+            todofile.writelines(line + '\n' for line in seed)
+            
 

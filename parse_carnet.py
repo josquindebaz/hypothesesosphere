@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-
-
-import urllib.request
+#import urllib.request
 from bs4 import BeautifulSoup
 import re
 import json
@@ -14,30 +12,33 @@ class get_content(object):
             html = response.read()
             self.html = html.decode('utf-8')
 
-
-
 class parsepage(object):
     def __init__(self, html):
-        soup = BeautifulSoup(html, "lxml")
-
-        #Get all links to hypotheses.org
-        to_follow = filter( self.is_carnet, self.recup_urls(soup) )   
-
         post = self.recupmeta(html) 
-        if (post):
-            #Take the content of the post
-            content = (soup.article)
-            #Get images
-            post['imgs'] = self.recup_img(content)
-            #Get urls
-            post['urls'] = self.recup_urls(content)
-            #json for log
-            js = json.dumps(post)
 
-            """
-            #Get carnets from urls
-            self.recup_names_carnets (filter(self.is_carnet, urls))
-            """
+        soup = BeautifulSoup(html, "lxml")
+        content = soup.find(id='page')
+
+        post['id'] = soup.find(property='og:url')['content']
+
+        #Get all urls
+        post['urls'] = self.recup_urls(content)    
+        #TODO remove social media, wordpress
+
+        #Get images
+        post['imgs'] = self.recup_img(content)
+
+        #json for log
+        js = json.dumps(post)
+        print(js)
+
+        #Get all links to X.hypotheses.org
+        #to_follow = filter(self.is_carnet, urls)
+
+        """
+        #Get carnets from urls
+        self.recup_names_carnets (filter(self.is_carnet, urls))
+        """
            
 
         """TODO 
@@ -54,9 +55,6 @@ class parsepage(object):
         else:
             print ("not a post")
             return False 
-
-    def is_carnet(self, url): 
-        return re.search("^\w*.hypotheses.org", url) 
 
     def recup_names_carnets(self, urls):
         """ Get Carnet Names from url"""
@@ -77,7 +75,8 @@ class parsepage(object):
             href = url['href']
             href = re.sub("https?://(www.)?", "", href) 
             href = re.sub("(#.*|/$)", "", href)
-            list_url.append(href)
+            if (href):
+                list_url.append(href)
         return list(set(list_url))
 
 
