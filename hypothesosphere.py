@@ -1,4 +1,5 @@
-# -*- encoding: utf-8 -*-
+#!/usr/bin/python3
+
 #josquin debaz 23 novembre
 
 
@@ -116,7 +117,7 @@ class links_logs(object):
         return os.path.join(self.rep, carnet + ".dat")
     
     def get_links(self, carnet):
-        print(carnet)
+        #print(carnet)
         path = self.f_carnet(carnet)
         if (os.path.isfile(path)):
             with open(path, 'r') as F:
@@ -170,7 +171,7 @@ class parsepage(object):
         for url in urls:
             if re.search("\.php$", url):
                 if not re.search("wp-login.php$", url):
-                    print('url')
+                    print(url)
             elif re.search("\.\w{1,}$", url):
                 if re.search("\.org$", url):
                     l.append(url)
@@ -180,10 +181,15 @@ class parsepage(object):
 
     def recupmeta(self, html):
         """ If it's a post, get date and size, Else return False """
-        if (len(re.findall('time class="entry-date" datetime=', html)) == 1):
+
+        #only one date, but not archive header
+        if ( len(re.findall('time class="entry-date" datetime=', html)) == 1
+            and not re.search('<header class="archive-header">', html) ):
+
             md = {'date' : re.findall('time class="entry-date" datetime="([\d-]*)T\S*">', html)[0] } 
             md['size'] = len(html)
             return md 
+
         else:
             return False 
 
@@ -226,7 +232,7 @@ if __name__ == '__main__' :
 
     while(Logs.todo_list):
         billet = Logs.todo_list.pop() 
-        print(billet)
+        #print(billet)
         name = name_carnet(billet)
 
         #add page to done
