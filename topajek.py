@@ -17,15 +17,18 @@ with open('h.net', 'w') as h:
     for i, c in enumerate(l_carnets):
         content += "%s %s\n" % (i+1, c)
     
+    garbage = i+1
+    content += "%d GARBAGE\n" %garbage
     content += "*edgeslist\n"
     for k, v in carnets.items():
-        n = l_carnets.index(k)+1
-        try:
-            content += "%s %s\n" %(n, " ".join( [str(l_carnets.index(el)+1) for el in v] ) ) 
-        except:
-            pass
-            
-            
-
+        if (len(v) > 0):
+            content += "%s" % (l_carnets.index(k)+1)
+            for el in v:
+                try: 
+                    content += " %s" % (l_carnets.index(el)+1) 
+                except:
+                    content += " %s" % (garbage) 
+                    #print (el, "not it list")
+            content += "\n" 
 
     h.write(content)
