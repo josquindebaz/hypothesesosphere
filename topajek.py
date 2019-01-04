@@ -1,34 +1,36 @@
 #!/usr/bin/python3
-#josquin debaz 20/12/2018
+#Josquin Debaz 04/01/2019
 import glob
 import re
 
+#for each filename.dat in links directory
+#put in carnets[filename] the list of links it contents
 carnets = {}
 for f in glob.glob("links/*.dat"):
     with open(f, 'r') as d:
         b = d.read()
-        l = re.split("\n", b)[:-1]
-        carnets[re.search("links/(\S*)\.dat", f).group(1)] = l
+        carnets[ re.search("links/(\S*)\.dat", f).group(1) ] = \
+            re.split("\n", b)[:-1]
 
+#fix the order by creating the list of filename/carnets
 l_carnets = list(carnets.keys())
 
 with open('h.net', 'w') as h:
+    #Indicate the number of nodes
+    #List each carnet with its number
     content = "*Vertices %d\n" % (len(carnets))
-    for i, c in enumerate(l_carnets):
-        content += "%s %s\n" % (i+1, c)
+    content += "".join(["%d %s\n" % (i+1, carnet) \
+        for i, carnet in enumerate(l_carnets)])
     
-    garbage = i+1
-    content += "%d GARBAGE\n" %garbage
+    #Insert linked carnet number for each carnet number
     content += "*edgeslist\n"
     for k, v in carnets.items():
-        if (len(v) > 0):
+        #remove non-listed carnets
+        vindices = [l_carnets.index(x)+1 for x in v if x in l_carnets]
+        if (len(vindices) > 0):
             content += "%s" % (l_carnets.index(k)+1)
-            for el in v:
-                try: 
-                    content += " %s" % (l_carnets.index(el)+1) 
-                except:
-                    content += " %s" % (garbage) 
-                    #print (el, "not it list")
+            for el in vindices:
+                content += " %d" % el
             content += "\n" 
 
     h.write(content)
