@@ -1,7 +1,10 @@
 #!/usr/bin/python3
-#Josquin Debaz 04/01/2019
+#Josquin Debaz 07/01/2019
 import glob
 import re
+
+#output
+out = "nets/hypothesosphere.net"
 
 #for each filename.dat in links directory
 #put in carnets[filename] the list of links it contents
@@ -15,7 +18,7 @@ for f in glob.glob("links/*.dat"):
 #fix the order by creating the list of filename/carnets
 l_carnets = list(carnets.keys())
 
-with open('h.net', 'w') as h:
+with open(out, 'w') as h:
     #Indicate the number of nodes
     #List each carnet with its number
     content = "*Vertices %d\n" % (len(carnets))
