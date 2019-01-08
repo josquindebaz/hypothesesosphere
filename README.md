@@ -7,7 +7,7 @@ run topajek.py -> h.net for Pajek or Gephi
 
 Final result (december 2018): 
 
-https://github.com/josquindebaz/hypothesesosphere/raw/master/nets/hyp2018.png
+<img src="https://github.com/josquindebaz/hypothesesosphere/raw/master/nets/hyp2018.png">
 https://github.com/josquindebaz/hypothesesosphere/raw/master/nets/hyp2018.svg
 https://github.com/josquindebaz/hypothesesosphere/blob/master/nets/hypothesosphere.net
 
