@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 #Josquin Debaz 07/01/2019
+#Licence GPL3
 import glob
 import re
 

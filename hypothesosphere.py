@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-
+# -*- coding: utf-8 -*-
 #josquin debaz 23 novembre
+#Licence GPL3
 
 
 """TODO
