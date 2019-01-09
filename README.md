@@ -1,7 +1,7 @@
 # hypothesesosphere 
 Python 3 scripts to generate an hypothesesosphere
 
-Please change email address in  hypothesosphere.py and ask Cleo for crawling authorization
+Please change email address in  hypothesosphere.py and ask OpenEdition for crawling authorization
 
 run  hypothesosphere.py -> wait for about 20 days
 
