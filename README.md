@@ -11,10 +11,10 @@ Final result (december 2018):
 
 <img src="https://github.com/josquindebaz/hypothesesosphere/raw/master/nets/hyp2018.png">
 
-<img src="https://github.com/josquindebaz/hypothesesosphere/raw/master/nets/hyp2018.svg"</img>
+<img src="https://github.com/josquindebaz/hypothesesosphere/raw/master/nets/hyp2018.svg">
           
 <p>https://github.com/josquindebaz/hypothesesosphere/blob/master/nets/hypothesosphere.net</p>
-<p>https://github.com/josquindebaz/hypothesesosphere/blob/master/nets/hypothesosphere2019.gephi</p>
+<p>https://github.com/josquindebaz/hypothesesosphere/blob/master/nets/hypothesosphere2018.gephi</p>
 
 
 2010 hypothesesosphere : https://socioargu.hypotheses.org/1921
