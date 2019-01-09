@@ -7,14 +7,16 @@ run  hypothesosphere.py -> wait for about 20 days
 
 run topajek.py -> h.net for Pajek or Gephi
 
-Final result (december 2018): 
+Final result (december 2018): Licence Creative Commons (BY SA)  Attribution + Partage dans les mêmes conditions 
 
 <img src="https://github.com/josquindebaz/hypothesesosphere/raw/master/nets/hyp2018.png">
 
-<img src="https://github.com/josquindebaz/hypothesesosphere/raw/master/nets/hyp2018.svg">
-          
-<p>https://github.com/josquindebaz/hypothesesosphere/blob/master/nets/hypothesosphere.net</p>
-<p>https://github.com/josquindebaz/hypothesesosphere/blob/master/nets/hypothesosphere2018.gephi</p>
+<ul>
+          <li>https://github.com/josquindebaz/hypothesesosphere/raw/master/nets/hyp2018.png</li>
+          <li>https://github.com/josquindebaz/hypothesesosphere/raw/master/nets/hyp2018.svg</li>
+          <li>https://github.com/josquindebaz/hypothesesosphere/raw/master/nets/hypothesosphere.net</li>
+          <li>https://github.com/josquindebaz/hypothesesosphere/raw/master/nets/hypothesosphere2018.gephi</li>
+</ul>
 
 
 2010 hypothesesosphere : https://socioargu.hypotheses.org/1921
